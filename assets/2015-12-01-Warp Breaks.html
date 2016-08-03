@@ -1,5 +1,5 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<!-- saved from url=(0114)file:///C:/Users/markp/OneDrive/Documents/Data%20Science/Projects/markpratley.github.io/_posts/warpbreaks.html#(1) -->
+<!-- saved from url=(0102)file:///C:/Users/markp/OneDrive/Documents/Data%20Science/Projects/warpbreaks-shiny/warpbreaks.html#(1) -->
 <html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   
   <meta http-equiv="Content-Style-Type" content="text/css">
@@ -7,9 +7,9 @@
   <meta name="author" content="Mark Pratley">
   <title>Warp Breaks (1)</title>
   <style type="text/css">code{white-space: pre;}</style>
-  <link rel="stylesheet" type="text/css" media="screen, projection, print" href="./2015-12-15-warp-breaks_files/slidy.css">
-  <script src="./2015-12-15-warp-breaks_files/slidy.js" charset="utf-8" type="text/javascript"></script>
-<script type="text/javascript" src="./2015-12-15-warp-breaks_files/MathJax.js"></script><style type="text/css">.MathJax_Hover_Frame {border-radius: .25em; -webkit-border-radius: .25em; -moz-border-radius: .25em; -khtml-border-radius: .25em; box-shadow: 0px 0px 15px #83A; -webkit-box-shadow: 0px 0px 15px #83A; -moz-box-shadow: 0px 0px 15px #83A; -khtml-box-shadow: 0px 0px 15px #83A; border: 1px solid #A6D ! important; display: inline-block; position: absolute}
+  <link rel="stylesheet" type="text/css" media="screen, projection, print" href="./2015-12-01-Warp Breaks_files/slidy.css">
+  <script src="./2015-12-01-Warp Breaks_files/slidy.js" charset="utf-8" type="text/javascript"></script>
+<script type="text/javascript" src="./2015-12-01-Warp Breaks_files/MathJax.js"></script><style type="text/css">.MathJax_Hover_Frame {border-radius: .25em; -webkit-border-radius: .25em; -moz-border-radius: .25em; -khtml-border-radius: .25em; box-shadow: 0px 0px 15px #83A; -webkit-box-shadow: 0px 0px 15px #83A; -moz-box-shadow: 0px 0px 15px #83A; -khtml-box-shadow: 0px 0px 15px #83A; border: 1px solid #A6D ! important; display: inline-block; position: absolute}
 .MathJax_Menu_Button .MathJax_Hover_Arrow {position: absolute; cursor: pointer; display: inline-block; border: 2px solid #AAA; border-radius: 4px; -webkit-border-radius: 4px; -moz-border-radius: 4px; -khtml-border-radius: 4px; font-family: 'Courier New',Courier; font-size: 9px; color: #F0F0F0}
 .MathJax_Menu_Button .MathJax_Hover_Arrow span {display: block; background-color: #AAA; border: 1px solid; border-radius: 3px; line-height: 0; padding: 4px}
 .MathJax_Hover_Arrow:hover {color: white!important; border: 2px solid #CCC!important}
@@ -105,7 +105,7 @@
 .MJXp-scale9 {-webkit-transform: scaleX(.9); -moz-transform: scaleX(.9); -ms-transform: scaleX(.9); -o-transform: scaleX(.9); transform: scaleX(.9)}
 .MathJax_PHTML .noError {vertical-align: ; font-size: 90%; text-align: left; color: black; padding: 1px 3px; border: 1px solid}
 </style></head>
-<body class=" single_slide" style="visibility: visible; font-size: 22pt;"><div id="MathJax_Message" style="display: none;"></div><div class=" slidy_toc hidden"><div class=" toc-heading">Table of Contents</div>1. <a href="file:///C:/Users/markp/OneDrive/Documents/Data%20Science/Projects/markpratley.github.io/_posts/warpbreaks.html#(1)" class=" titleslide">Warp Breaks</a><br>2. <a href="file:///C:/Users/markp/OneDrive/Documents/Data%20Science/Projects/markpratley.github.io/_posts/warpbreaks.html#(2)">Warp Breaks</a><br>3. <a href="file:///C:/Users/markp/OneDrive/Documents/Data%20Science/Projects/markpratley.github.io/_posts/warpbreaks.html#(3)">The Warpbreaks Dataset</a><br>4. <a href="file:///C:/Users/markp/OneDrive/Documents/Data%20Science/Projects/markpratley.github.io/_posts/warpbreaks.html#(4)">Examining All Breaks</a><br>5. <a href="file:///C:/Users/markp/OneDrive/Documents/Data%20Science/Projects/markpratley.github.io/_posts/warpbreaks.html#(5)">Breaks Grouped by Tension</a><br>6. <a href="file:///C:/Users/markp/OneDrive/Documents/Data%20Science/Projects/markpratley.github.io/_posts/warpbreaks.html#(6)">Breaks Grouped by Tension</a><br>7. <a href="file:///C:/Users/markp/OneDrive/Documents/Data%20Science/Projects/markpratley.github.io/_posts/warpbreaks.html#(7)">Tension Conclusions</a><br>8. <a href="file:///C:/Users/markp/OneDrive/Documents/Data%20Science/Projects/markpratley.github.io/_posts/warpbreaks.html#(8)">Comparing Breaks with Wool Type</a><br>9. <a href="file:///C:/Users/markp/OneDrive/Documents/Data%20Science/Projects/markpratley.github.io/_posts/warpbreaks.html#(9)">Comparing Breaks with Wool Type</a><br>10. <a href="file:///C:/Users/markp/OneDrive/Documents/Data%20Science/Projects/markpratley.github.io/_posts/warpbreaks.html#(10)">Wool Conclusions</a><br>11. <a href="file:///C:/Users/markp/OneDrive/Documents/Data%20Science/Projects/markpratley.github.io/_posts/warpbreaks.html#(11)">Warp Breaks(11)</a><br>12. <a href="file:///C:/Users/markp/OneDrive/Documents/Data%20Science/Projects/markpratley.github.io/_posts/warpbreaks.html#(12)">Warp Breaks(12)</a><br>13. <a href="file:///C:/Users/markp/OneDrive/Documents/Data%20Science/Projects/markpratley.github.io/_posts/warpbreaks.html#(13)">Warp Breaks(13)</a><br>14. <a href="file:///C:/Users/markp/OneDrive/Documents/Data%20Science/Projects/markpratley.github.io/_posts/warpbreaks.html#(14)">Final Table of Statistics for Breaks</a><br>15. <a href="file:///C:/Users/markp/OneDrive/Documents/Data%20Science/Projects/markpratley.github.io/_posts/warpbreaks.html#(15)">Conclusions</a></div>
+<body class=" single_slide" style="visibility: visible; font-size: 20pt;"><div id="MathJax_Message" style="display: none;"></div><div class=" slidy_toc hidden"><div class=" toc-heading">Table of Contents</div>1. <a href="file:///C:/Users/markp/OneDrive/Documents/Data%20Science/Projects/warpbreaks-shiny/warpbreaks.html#(1)" class=" titleslide">Warp Breaks</a><br>2. <a href="file:///C:/Users/markp/OneDrive/Documents/Data%20Science/Projects/warpbreaks-shiny/warpbreaks.html#(2)">Warp Breaks</a><br>3. <a href="file:///C:/Users/markp/OneDrive/Documents/Data%20Science/Projects/warpbreaks-shiny/warpbreaks.html#(3)">The Warpbreaks Dataset</a><br>4. <a href="file:///C:/Users/markp/OneDrive/Documents/Data%20Science/Projects/warpbreaks-shiny/warpbreaks.html#(4)">Examining All Breaks</a><br>5. <a href="file:///C:/Users/markp/OneDrive/Documents/Data%20Science/Projects/warpbreaks-shiny/warpbreaks.html#(5)">Breaks Grouped by Tension</a><br>6. <a href="file:///C:/Users/markp/OneDrive/Documents/Data%20Science/Projects/warpbreaks-shiny/warpbreaks.html#(6)">Breaks Grouped by Tension</a><br>7. <a href="file:///C:/Users/markp/OneDrive/Documents/Data%20Science/Projects/warpbreaks-shiny/warpbreaks.html#(7)">Tension Conclusions</a><br>8. <a href="file:///C:/Users/markp/OneDrive/Documents/Data%20Science/Projects/warpbreaks-shiny/warpbreaks.html#(8)">Comparing Breaks with Wool Type</a><br>9. <a href="file:///C:/Users/markp/OneDrive/Documents/Data%20Science/Projects/warpbreaks-shiny/warpbreaks.html#(9)">Comparing Breaks with Wool Type</a><br>10. <a href="file:///C:/Users/markp/OneDrive/Documents/Data%20Science/Projects/warpbreaks-shiny/warpbreaks.html#(10)">Wool Conclusions</a><br>11. <a href="file:///C:/Users/markp/OneDrive/Documents/Data%20Science/Projects/warpbreaks-shiny/warpbreaks.html#(11)">Comparing Breaks with Wool Type and Tension</a><br>12. <a href="file:///C:/Users/markp/OneDrive/Documents/Data%20Science/Projects/warpbreaks-shiny/warpbreaks.html#(12)">Comparing Breaks with Wool Type and Tension</a><br>13. <a href="file:///C:/Users/markp/OneDrive/Documents/Data%20Science/Projects/warpbreaks-shiny/warpbreaks.html#(13)">Mean Warp Breaks by Tension and Wool</a><br>14. <a href="file:///C:/Users/markp/OneDrive/Documents/Data%20Science/Projects/warpbreaks-shiny/warpbreaks.html#(14)">Final Table of Statistics for Breaks</a><br>15. <a href="file:///C:/Users/markp/OneDrive/Documents/Data%20Science/Projects/warpbreaks-shiny/warpbreaks.html#(15)">Conclusions</a></div>
 <div class="slide titlepage first-slide">
   <h1 class="title">Warp Breaks</h1>
   <p class="author">
@@ -115,7 +115,7 @@ Mark Pratley
 <br><br></div>
 <div id="warp-breaks" class="slide section level2 hidden">
 <h1>Warp Breaks</h1>
-<p>To see this as a presentation click <a href="file:///C:/Users/markp/OneDrive/Documents/Data%20Science/Projects/markpratley.github.io/Warpbreaks-Presentation.html">here</a></p>
+<p>To see this as a presentation click <a href="file:///C:/Users/markp/OneDrive/Documents/Data%20Science/Projects/Warpbreaks-Presentation.html">here</a></p>
 <p>This is a practice presentation using the <a href="https://stat.ethz.ch/R-manual/R-devel/library/datasets/html/warpbreaks.html">warpbreaks</a> dataset.</p>
 <p>The warpbreaks dataset gives the number of breaks in Yarn during Weaving.</p>
 <p>It uses fixed lengths of yarn with two different types of wool and varying tensions.</p>
@@ -141,15 +141,15 @@ Mark Pratley
 <br><br></div>
 <div id="examining-all-breaks" class="slide section level2 hidden">
 <h1>Examining All Breaks</h1>
-<p><img src="./2015-12-15-warp-breaks_files/unnamed-chunk-2-1.png" title="" alt="" width="768"></p>
+<p><img src="./2015-12-01-Warp Breaks_files/unnamed-chunk-2-1.png" title="" alt="" width="768"></p>
 <br><br></div>
 <div id="breaks-grouped-by-tension" class="slide section level2 hidden">
 <h1>Breaks Grouped by Tension</h1>
-<p><img src="./2015-12-15-warp-breaks_files/unnamed-chunk-3-1.png" title="" alt="" width="768"></p>
+<p><img src="./2015-12-01-Warp Breaks_files/unnamed-chunk-3-1.png" title="" alt="" width="768"></p>
 <br><br></div>
 <div id="breaks-grouped-by-tension-1" class="slide section level2 hidden">
 <h1>Breaks Grouped by Tension</h1>
-<p><img src="./2015-12-15-warp-breaks_files/unnamed-chunk-4-1.png" title="" alt="" width="768"></p>
+<p><img src="./2015-12-01-Warp Breaks_files/unnamed-chunk-4-1.png" title="" alt="" width="768"></p>
 <!-- ## Breaks Grouped by Tension -->
 <!-- ### BoxPlot -->
 <!-- ```{r, echo=F, warning=F, message=FALSE} -->
@@ -218,11 +218,11 @@ Mark Pratley
 <br><br></div>
 <div id="comparing-breaks-with-wool-type" class="slide section level2 hidden">
 <h1>Comparing Breaks with Wool Type</h1>
-<p><img src="./2015-12-15-warp-breaks_files/unnamed-chunk-6-1.png" title="" alt="" width="768"></p>
+<p><img src="./2015-12-01-Warp Breaks_files/unnamed-chunk-6-1.png" title="" alt="" width="768"></p>
 <br><br></div>
 <div id="comparing-breaks-with-wool-type-1" class="slide section level2 hidden">
 <h1>Comparing Breaks with Wool Type</h1>
-<p><img src="./2015-12-15-warp-breaks_files/unnamed-chunk-7-1.png" title="" alt="" width="768"></p>
+<p><img src="./2015-12-01-Warp Breaks_files/unnamed-chunk-7-1.png" title="" alt="" width="768"></p>
 <br><br></div>
 <div id="wool-conclusions" class="slide section level2 hidden">
 <h1>Wool Conclusions</h1>
@@ -263,20 +263,17 @@ Mark Pratley
 <p>Whilst wool type A has a larger standard deviation, which along with a lower minimum and higher maximum shows that wool A has much higher variation than type B.</p>
 <p>It is interesting to note that the multimodal appearance (multiple peaks) on the density plot may imply that the different wool types have differing sensitivities to tension. We will explore this next.</p>
 <br><br></div>
-<div id="section" class="slide section level2 hidden">
-<h1></h1>
-<h3 id="comparing-breaks-with-wool-type-and-tension">Comparing Breaks with Wool Type and Tension</h3>
-<p><img src="./2015-12-15-warp-breaks_files/unnamed-chunk-9-1.png" title="" alt="" width="768"></p>
+<div id="comparing-breaks-with-wool-type-and-tension" class="slide section level2 hidden">
+<h1>Comparing Breaks with Wool Type and Tension</h1>
+<p><img src="./2015-12-01-Warp Breaks_files/unnamed-chunk-9-1.png" title="" alt="" width="768"></p>
 <br><br></div>
-<div id="section-1" class="slide section level2 hidden">
-<h1></h1>
-<h3 id="comparing-breaks-with-wool-type-and-tension-1">Comparing Breaks with Wool Type and Tension</h3>
-<p><img src="./2015-12-15-warp-breaks_files/unnamed-chunk-10-1.png" title="" alt="" width="768"></p>
+<div id="comparing-breaks-with-wool-type-and-tension-1" class="slide section level2 hidden">
+<h1>Comparing Breaks with Wool Type and Tension</h1>
+<p><img src="./2015-12-01-Warp Breaks_files/unnamed-chunk-10-1.png" title="" alt="" width="768"></p>
 <br><br></div>
-<div id="section-2" class="slide section level2 hidden">
-<h1></h1>
-<h3 id="mean-warp-breaks-by-tension-and-wool">Mean Warp Breaks by Tension and Wool</h3>
-<p><img src="./2015-12-15-warp-breaks_files/unnamed-chunk-11-1.png" title="" alt="" width="768"></p>
+<div id="mean-warp-breaks-by-tension-and-wool" class="slide section level2 hidden">
+<h1>Mean Warp Breaks by Tension and Wool</h1>
+<p><img src="./2015-12-01-Warp Breaks_files/unnamed-chunk-11-1.png" title="" alt="" width="768"></p>
 <br><br></div>
 <div id="final-table-of-statistics-for-breaks" class="slide section level2 hidden">
 <h1>Final Table of Statistics for Breaks</h1>
