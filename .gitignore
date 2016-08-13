@@ -2,3 +2,5 @@ _site
 .sass-cache
 .jekyll-metadata
 Gemfile.lock
+ORIG__config.yml
+.gitignore
