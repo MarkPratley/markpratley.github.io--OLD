@@ -4,3 +4,4 @@ _site
 Gemfile.lock
 ORIG__config.yml
 .gitignore
+*.db
