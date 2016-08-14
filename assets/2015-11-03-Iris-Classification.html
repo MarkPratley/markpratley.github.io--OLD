@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+<meta name="author" content="Mark Pratley" />
+
+
+<title>Iris Classification</title>
+
+<script src="2015-11-03-Iris-Classification_files/jquery-1.11.0/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="2015-11-03-Iris-Classification_files/bootstrap-3.3.1/css/bootstrap.min.css" rel="stylesheet" />
+<script src="2015-11-03-Iris-Classification_files/bootstrap-3.3.1/js/bootstrap.min.js"></script>
+<script src="2015-11-03-Iris-Classification_files/bootstrap-3.3.1/shim/html5shiv.min.js"></script>
+<script src="2015-11-03-Iris-Classification_files/bootstrap-3.3.1/shim/respond.min.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<link rel="stylesheet"
+      href="2015-11-03-Iris-Classification_files/highlight/default.css"
+      type="text/css" />
+<script src="2015-11-03-Iris-Classification_files/highlight/highlight.js"></script>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs && document.readyState && document.readyState === "complete") {
+   window.setTimeout(function() {
+      hljs.initHighlighting();
+   }, 0);
+}
+</script>
+
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img { 
+  max-width:100%; 
+  height: auto; 
+}
+</style>
+<div class="container-fluid main-container">
+
+
+<div id="header">
+<h1 class="title">Iris Classification</h1>
+<h4 class="author"><em>Mark Pratley</em></h4>
+<h4 class="date"><em>3 November 2015</em></h4>
+</div>
+
+
+<p>This is a quick exploration of simple classification using <a href="http://topepo.github.io/caret/index.html">caret</a> with Edgar Anderson’s famous <a href="http://archive.ics.uci.edu/ml/datasets/Iris">Iris data set</a>.</p>
+<p>The goal of the project is to utilise caret alongside a variety of machine learning algorithms to correctly classify irises into their species group whilst casually comparing the different algorithms.</p>
+<div id="the-data" class="section level3">
+<h3>The Data</h3>
+<p>Anderson’s Iris data set gives the measurements in centimeters of the 4 predictors, as well as the Species:</p>
+<ul>
+<li>Sepal Length</li>
+<li>Sepal Width</li>
+<li>Petal Length</li>
+<li>Petal Width</li>
+<li>Species
+<ul>
+<li><em>iris setosa</em></li>
+<li><em>iris versicolor</em></li>
+<li><em>iris virginica</em></li>
+</ul></li>
+</ul>
+<pre class="r"><code>summary(iris)</code></pre>
+<pre><code>##   Sepal.Length    Sepal.Width     Petal.Length    Petal.Width   
+##  Min.   :4.300   Min.   :2.000   Min.   :1.000   Min.   :0.100  
+##  1st Qu.:5.100   1st Qu.:2.800   1st Qu.:1.600   1st Qu.:0.300  
+##  Median :5.800   Median :3.000   Median :4.350   Median :1.300  
+##  Mean   :5.843   Mean   :3.057   Mean   :3.758   Mean   :1.199  
+##  3rd Qu.:6.400   3rd Qu.:3.300   3rd Qu.:5.100   3rd Qu.:1.800  
+##  Max.   :7.900   Max.   :4.400   Max.   :6.900   Max.   :2.500  
+##        Species  
+##  setosa    :50  
+##  versicolor:50  
+##  virginica :50  
+##                 
+##                 
+## </code></pre>
+<p>The iris data set was chosen partly as it requires no pre-processing or transformation, which is ideal for quickly looking at caret and classification, and also partly because it is a classic classification data set.</p>
+</div>
+<div id="pairwise-correlation-matrix" class="section level3">
+<h3>Pairwise Correlation Matrix</h3>
+<p>First we will create a Pairwise Correlation Matrix to explore the variables and look for any relationships.</p>
+<pre class="r"><code>ggpairs(iris,
+        colour=&#39;Species&#39;,
+        alpha=0.4,
+        title = &quot;Anderson&#39;s Iris Data -- 3 species&quot;)</code></pre>
+<p><img src="2015-11-03-Iris-Classification_files/figure-html/corr-1.png" title="" alt="" width="672" /></p>
+<p>These pairwise scatterplots show that there is strong correlation between Petal.Length and Petal.Width. And also correlation between Sepal.Length and Petal.Length, and also Sepal.Length with Petal.Width.</p>
+<p>We can also see a degree of separation between <em>iris setosa</em> and the other Irises, but there is no clear separation between <em>iris versicolor</em> and <em>iris virginica</em></p>
+</div>
+<div id="comparing-sepal.length-and-sepal.width" class="section level3">
+<h3>Comparing Sepal.Length and Sepal.Width</h3>
+<pre class="r"><code>ggplot(iris, aes(x=Sepal.Length, y=Sepal.Width, colour=Species)) + 
+    geom_point() +
+    ggtitle(&quot;Sepal.Length vs Sepal.Width&quot;)</code></pre>
+<p><img src="2015-11-03-Iris-Classification_files/figure-html/sep-compare-1.png" title="" alt="" width="672" /></p>
+<p>Comparing Sepal.Width and Sepal.Length whilst colouring according to species shows good separation between <em>iris setosa</em> and the other iris species, but again only minor difference between <em>iris versicolor</em> and <em>iris virginica.</em></p>
+</div>
+<div id="comparing-petal.length-and-petal.width" class="section level3">
+<h3>Comparing Petal.Length and Petal.Width</h3>
+<pre class="r"><code>ggplot(iris, aes(x=Petal.Width, y=Petal.Length, colour=Species)) + 
+    geom_point() +
+    ggtitle(&quot;Petal.Length vs Petal.Width&quot;)</code></pre>
+<p><img src="2015-11-03-Iris-Classification_files/figure-html/pet-compare-1.png" title="" alt="" width="672" /></p>
+<p>From this graph, looking at the Petal.Width vs Petal.Length and colouring according to species, we can see both strong correlation and also pretty good separation betwen the 3 species, except for a few uncertain points between the blue/green groups.</p>
+</div>
+<div id="models" class="section level2">
+<h2>Models</h2>
+<p>We’ll build some models and use them to classify species.</p>
+<div id="testtraining-data" class="section level3">
+<h3>Test/Training Data</h3>
+<p>First we need to split our data set in test and training sets.</p>
+<p>The function createDataPartition can be used to create a <a href="http://stattrek.com/statistics/dictionary.aspx?definition=stratified_sampling">stratified random sample</a> of the data.</p>
+<pre class="r"><code>inTrainingSet &lt;- createDataPartition(iris$Species, p = .50, list = FALSE)
+irisTrain &lt;- iris[ inTrainingSet,]
+irisTest  &lt;- iris[ -inTrainingSet,]</code></pre>
+</div>
+<div id="random-forest" class="section level3">
+<h3><a href="https://en.wikipedia.org/wiki/Random_forest">Random Forest</a></h3>
+<p>We now can use caret with a standard random forest method to create a model for clasifying iris species.</p>
+<pre class="r"><code>m.rf &lt;- train( Species ~ ., data=irisTrain, method=&quot;rf&quot; )</code></pre>
+<p>Let’s check our model by using it on the unseen test data to predict the species based on the other variables.</p>
+<pre class="r"><code>pred.rf &lt;- predict(m.rf, irisTest)</code></pre>
+<p>Now we can view a <a href="https://en.wikipedia.org/wiki/Confusion_matrix">confusion matrix</a> to see how well our random forest classified the data.</p>
+<pre class="r"><code>cm.rf &lt;- confusionMatrix(pred.rf, irisTest$Species)
+kable(cm.rf$table)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left"></th>
+<th align="right">setosa</th>
+<th align="right">versicolor</th>
+<th align="right">virginica</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">setosa</td>
+<td align="right">25</td>
+<td align="right">0</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">versicolor</td>
+<td align="right">0</td>
+<td align="right">24</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">virginica</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">24</td>
+</tr>
+</tbody>
+</table>
+<p>This is pretty good, classifying all 25/25 of the <em>iris setosa</em> data correctly, only misclassifying 1/25 <em>iris versicolor</em> as <em>iris virginica</em>, and misclassifying 1/25 <em>iris virginica</em> as <em>iris versicolor</em></p>
+</div>
+<div id="c5.0" class="section level3">
+<h3><a href="https://en.wikipedia.org/wiki/C4.5_algorithm">C5.0</a></h3>
+<p>Now we will try classifying with the C5.0 algorithm.</p>
+<pre class="r"><code>m.C50 &lt;- train(Species ~ ., data=irisTrain, method=&quot;C5.0&quot; )
+
+pred.C50 &lt;- predict(m.C50, irisTest)
+cm.C50 &lt;- confusionMatrix(pred.C50, irisTest$Species)
+kable(cm.C50$table)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left"></th>
+<th align="right">setosa</th>
+<th align="right">versicolor</th>
+<th align="right">virginica</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">setosa</td>
+<td align="right">23</td>
+<td align="right">0</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">versicolor</td>
+<td align="right">2</td>
+<td align="right">24</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">virginica</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">24</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="naive-bayes" class="section level3">
+<h3><a href="https://en.wikipedia.org/wiki/Naive_Bayes_classifier">Naive Bayes</a></h3>
+<pre class="r"><code>m.nb &lt;- train(Species~., data=irisTrain, method=&quot;nb&quot;)
+
+pred.nb &lt;- predict(m.nb, irisTest)
+cm.nb &lt;- confusionMatrix(pred.nb, irisTest$Species)
+kable(cm.nb$table)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left"></th>
+<th align="right">setosa</th>
+<th align="right">versicolor</th>
+<th align="right">virginica</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">setosa</td>
+<td align="right">25</td>
+<td align="right">0</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">versicolor</td>
+<td align="right">0</td>
+<td align="right">24</td>
+<td align="right">2</td>
+</tr>
+<tr class="odd">
+<td align="left">virginica</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">23</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="naive-bayes-with-k-fold-cross-validation" class="section level3">
+<h3>Naive Bayes with <a href="http://en.wikipedia.org/wiki/Cross-validation_(statistics)">k-fold Cross Validation</a></h3>
+<p>We will now add k-fold (in this case 10-fold) cross validation to create our naive bayes model.</p>
+<pre class="r"><code>train_control &lt;- trainControl(method=&quot;cv&quot;, number=10)
+
+m.nbkf &lt;- train(Species~., data=irisTrain, trControl=train_control, method=&quot;nb&quot;)
+
+pred.nbkf &lt;- predict(m.nbkf, irisTest)
+cm.nbkf &lt;- confusionMatrix(pred.nbkf, irisTest$Species)
+kable(cm.nbkf$table)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left"></th>
+<th align="right">setosa</th>
+<th align="right">versicolor</th>
+<th align="right">virginica</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">setosa</td>
+<td align="right">25</td>
+<td align="right">0</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">versicolor</td>
+<td align="right">0</td>
+<td align="right">24</td>
+<td align="right">2</td>
+</tr>
+<tr class="odd">
+<td align="left">virginica</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">23</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="k-nearest-neighbours" class="section level3">
+<h3><a href="https://en.wikipedia.org/wiki/K-nearest_neighbors_algorithm">k-nearest neighbours</a></h3>
+<pre class="r"><code>m.knn &lt;- train(Species~., data=irisTrain, method=&quot;knn&quot;)
+
+pred.knn &lt;- predict(m.knn, irisTest)
+cm.knn &lt;- confusionMatrix(pred.knn, irisTest$Species)
+kable(cm.knn$table)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left"></th>
+<th align="right">setosa</th>
+<th align="right">versicolor</th>
+<th align="right">virginica</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">setosa</td>
+<td align="right">25</td>
+<td align="right">0</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">versicolor</td>
+<td align="right">0</td>
+<td align="right">25</td>
+<td align="right">2</td>
+</tr>
+<tr class="odd">
+<td align="left">virginica</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">23</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="neural-network" class="section level3">
+<h3><a href="https://en.wikipedia.org/wiki/Artificial_neural_network">Neural Network</a></h3>
+<pre class="r"><code>m.nnet &lt;- train(Species~.,data=irisTrain,method=&quot;nnet&quot;, trace=FALSE)
+
+pred.nnet &lt;- predict(m.nnet, irisTest)
+cm.nnet &lt;- confusionMatrix(pred.nnet, irisTest$Species)
+kable(cm.nnet$table)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left"></th>
+<th align="right">setosa</th>
+<th align="right">versicolor</th>
+<th align="right">virginica</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">setosa</td>
+<td align="right">25</td>
+<td align="right">0</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">versicolor</td>
+<td align="right">0</td>
+<td align="right">24</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">virginica</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">25</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="neural-network-with-bootstrapping" class="section level3">
+<h3>Neural Network with <a href="https://www.wikiwand.com/en/Bootstrapping_(statistics)">Bootstrapping</a></h3>
+<pre class="r"><code>tc &lt;- trainControl(method=&quot;boot&quot;,number=25)
+
+m.nnet.bs &lt;- train(Species~.,data=irisTrain,method=&quot;nnet&quot;,trControl=tc, trace=FALSE)
+
+pred.nnet.bs &lt;- predict(m.nnet.bs, irisTest)
+cm.nnet.bs &lt;- confusionMatrix(pred.nnet.bs, irisTest$Species)
+kable(cm.nnet.bs$table)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left"></th>
+<th align="right">setosa</th>
+<th align="right">versicolor</th>
+<th align="right">virginica</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">setosa</td>
+<td align="right">25</td>
+<td align="right">0</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">versicolor</td>
+<td align="right">0</td>
+<td align="right">24</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">virginica</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">25</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="random-forest-with-leave-one-out-cross-validation" class="section level3">
+<h3>Random Forest with <a href="https://www.wikiwand.com/en/Bootstrapping_(statistics)">Leave One Out Cross Validation</a></h3>
+<pre class="r"><code>tc &lt;- trainControl(method=&quot;LOOCV&quot;, number=25)
+
+m.rf.bs &lt;- train(Species~.,data=irisTrain,method=&quot;rf&quot;,trControl=tc, trace=FALSE)
+
+pred.rf.bs &lt;- predict(m.rf.bs, irisTest)
+cm.rf.bs &lt;- confusionMatrix(pred.rf.bs, irisTest$Species)
+kable(cm.rf.bs$table)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left"></th>
+<th align="right">setosa</th>
+<th align="right">versicolor</th>
+<th align="right">virginica</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">setosa</td>
+<td align="right">25</td>
+<td align="right">0</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">versicolor</td>
+<td align="right">0</td>
+<td align="right">24</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">virginica</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">24</td>
+</tr>
+</tbody>
+</table>
+<!-- ### Elastic Net [glmnet](https://cran.r-project.org/web/packages/glmnet/vignettes/glmnet_beta.html) -->
+<!-- ```{r glmnet, warning=FALSE, cache = T, message=FALSE} -->
+<!-- m.glmnet <- train(Species~., -->
+<!--                   data=irisTrain, -->
+<!--                   method="AdaBoost.M1") -->
+<!-- pred.glmnet <- predict(m.glmnet, irisTest) -->
+<!-- cm.glmnet <- confusionMatrix(pred.glmnet, irisTest$Species) -->
+<!-- kable(cm.glmnet$table) -->
+<!-- ``` -->
+<!-- ```{r glmnet-mcc, warning=FALSE, echo=FALSE, cache = F} -->
+<!-- results[nrow(results) + 1, ][1] <- c("Elastic Net") -->
+<!-- results[nrow(results),][2] <- mcc(cm.glmnet$table) -->
+<!-- ``` -->
+</div>
+<div id="using-pre-processing-including-pca-with-neural-net" class="section level3">
+<h3>Using Pre-Processing (including <a href="https://www.wikiwand.com/en/Principal_component_analysis">PCA</a>) with Neural Net</h3>
+<pre class="r"><code>m.nnet.pp &lt;- train(Species~.,
+                data=irisTrain,
+                method=&quot;nnet&quot;,
+                preProcess=c(&quot;BoxCox&quot;, &quot;center&quot;, &quot;scale&quot;, &quot;pca&quot;),
+                trace=FALSE)
+
+pred.nnet.pp &lt;- predict(m.nnet.pp, irisTest)
+cm.nnet.pp &lt;- confusionMatrix(pred.nnet.pp, irisTest$Species)
+kable(cm.nnet.pp$table)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left"></th>
+<th align="right">setosa</th>
+<th align="right">versicolor</th>
+<th align="right">virginica</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">setosa</td>
+<td align="right">25</td>
+<td align="right">0</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">versicolor</td>
+<td align="right">0</td>
+<td align="right">23</td>
+<td align="right">5</td>
+</tr>
+<tr class="odd">
+<td align="left">virginica</td>
+<td align="right">0</td>
+<td align="right">2</td>
+<td align="right">20</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="results" class="section level2">
+<h2>Results</h2>
+<p>Having used a variety of different models to classify the iris data set, we can now attempt to compare their performance. Comparing confusion matrices isn’t entirelty straight-forward as models perform differently in different areas, some optimising for specificity, some for sensitivity, or for some other metric. I have chosen to use <a href="https://en.wikipedia.org/wiki/Matthews_correlation_coefficient">Matthews Correlation Coefficient</a> which gives a single number in the range -1 to +1, and is a correlation coefficient between the observed and predicted binary classifications.</p>
+<pre class="r"><code>results &lt;- results %&gt;% arrange(desc(MCC))
+kable(results)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">Name</th>
+<th align="right">MCC</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Neural Net</td>
+<td align="right">0.9802614</td>
+</tr>
+<tr class="even">
+<td align="left">Neural Net w Boot</td>
+<td align="right">0.9802614</td>
+</tr>
+<tr class="odd">
+<td align="left">KNN</td>
+<td align="right">0.9610256</td>
+</tr>
+<tr class="even">
+<td align="left">Random Forest</td>
+<td align="right">0.9600000</td>
+</tr>
+<tr class="odd">
+<td align="left">Random Forest w LOOCV</td>
+<td align="right">0.9600000</td>
+</tr>
+<tr class="even">
+<td align="left">Naive Bayes</td>
+<td align="right">0.9402508</td>
+</tr>
+<tr class="odd">
+<td align="left">Naive Bayes k-fold</td>
+<td align="right">0.9402508</td>
+</tr>
+<tr class="even">
+<td align="left">C5.0</td>
+<td align="right">0.9209829</td>
+</tr>
+<tr class="odd">
+<td align="left">Neural Net PP</td>
+<td align="right">0.8620715</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>gg &lt;- 
+    ggplot(results, aes(x=Name, y=MCC, fill=Name)) + 
+    geom_bar(stat=&quot;identity&quot;) +
+    ggtitle(&quot;Comparison of Classification Methods&quot;) + 
+    theme(axis.text.x=element_blank(),
+          axis.title.x=element_blank())
+
+print(gg)</code></pre>
+<p><img src="2015-11-03-Iris-Classification_files/figure-html/results-1.png" title="" alt="" width="672" /></p>
+<p>From the table and graph it is possible to see that all the models performed similarly, in the range 0.88 - 0.98. But the Neural Network performed the best MCC=0.98, followed by KNN with MCC=0.96.</p>
+<p>Another point of interest is that the worst model was also the neural network, but with pre-processed data using BoxCox, centering, scaling and PCA which implies that innapropriate pre-processing can be worse than none.</p>
+<!-- ggplot(results, aes(x=Name, y=MCC, fill=Name)) +  -->
+<!--     geom_bar(stat="identity") + -->
+<!--     theme(axis.text.x  = element_text(angle=90, vjust=0.5, size=16)) + -->
+<!--     ggtitle("Comparison of Classification Methods") + +     theme( -->
+<!--             axis.line=element_blank(), -->
+<!--             axis.text.x=element_blank(), -->
+<!--             axis.text.y=element_blank(), -->
+<!--             axis.ticks=element_blank(), -->
+<!--             axis.title.x=element_blank(), -->
+<!--             axis.title.y=element_blank(), -->
+<!--             legend.position="none", -->
+<!--             panel.background=element_blank(), -->
+<!--             panel.border=element_blank(), -->
+<!--             panel.grid.major=element_blank(), -->
+<!--             panel.grid.minor=element_blank(), -->
+<!--             plot.background=element_blank() -->
+<!--            ) -->
+</div>
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+$(document).ready(function () {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+});
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
