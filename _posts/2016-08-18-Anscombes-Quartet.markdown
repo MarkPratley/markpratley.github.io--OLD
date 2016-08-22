@@ -1,8 +1,8 @@
 ---
 layout: default
-modal-id: 3
+modal-id: 4
 date: 2016-08-18
-img: ../../img/AnscombesQuartet.png
+img: ../../img/Anscombes-Quartet.png
 alt: Anscombes Quartet - Visual Comparison
 client: myself
 project-date: August 2016

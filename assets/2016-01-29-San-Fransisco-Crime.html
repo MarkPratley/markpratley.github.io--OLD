@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<!-- saved from url=(0093)file:///C:/Users/markp/OneDrive/Documents/Data%20Science/Projects/SFCrime/SFCrimeExplore.html -->
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+
+
+<meta name="generator" content="pandoc">
+
+<meta name="author" content="Mark Pratley">
+
+<meta name="date" content="2016-01-29">
+
+<title>Exploring SF Crime Data</title>
+
+<script src="./2016-01-29-San-Fransisco-Crime_files/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="./2016-01-29-San-Fransisco-Crime_files/bootstrap.min.css" rel="stylesheet">
+<script src="./2016-01-29-San-Fransisco-Crime_files/bootstrap.min.js"></script>
+<script src="./2016-01-29-San-Fransisco-Crime_files/html5shiv.min.js"></script>
+<script src="./2016-01-29-San-Fransisco-Crime_files/respond.min.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<link rel="stylesheet" href="./2016-01-29-San-Fransisco-Crime_files/default.css" type="text/css">
+<script src="./2016-01-29-San-Fransisco-Crime_files/highlight.js"></script>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs && document.readyState && document.readyState === "complete") {
+   window.setTimeout(function() {
+      hljs.initHighlighting();
+   }, 0);
+}
+</script>
+
+
+
+<script type="text/javascript" src="./2016-01-29-San-Fransisco-Crime_files/MathJax.js"></script><style type="text/css">.MathJax_Hover_Frame {border-radius: .25em; -webkit-border-radius: .25em; -moz-border-radius: .25em; -khtml-border-radius: .25em; box-shadow: 0px 0px 15px #83A; -webkit-box-shadow: 0px 0px 15px #83A; -moz-box-shadow: 0px 0px 15px #83A; -khtml-box-shadow: 0px 0px 15px #83A; border: 1px solid #A6D ! important; display: inline-block; position: absolute}
+.MathJax_Menu_Button .MathJax_Hover_Arrow {position: absolute; cursor: pointer; display: inline-block; border: 2px solid #AAA; border-radius: 4px; -webkit-border-radius: 4px; -moz-border-radius: 4px; -khtml-border-radius: 4px; font-family: 'Courier New',Courier; font-size: 9px; color: #F0F0F0}
+.MathJax_Menu_Button .MathJax_Hover_Arrow span {display: block; background-color: #AAA; border: 1px solid; border-radius: 3px; line-height: 0; padding: 4px}
+.MathJax_Hover_Arrow:hover {color: white!important; border: 2px solid #CCC!important}
+.MathJax_Hover_Arrow:hover span {background-color: #CCC!important}
+</style><style type="text/css">#MathJax_About {position: fixed; left: 50%; width: auto; text-align: center; border: 3px outset; padding: 1em 2em; background-color: #DDDDDD; color: black; cursor: default; font-family: message-box; font-size: 120%; font-style: normal; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; z-index: 201; border-radius: 15px; -webkit-border-radius: 15px; -moz-border-radius: 15px; -khtml-border-radius: 15px; box-shadow: 0px 10px 20px #808080; -webkit-box-shadow: 0px 10px 20px #808080; -moz-box-shadow: 0px 10px 20px #808080; -khtml-box-shadow: 0px 10px 20px #808080; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+#MathJax_About.MathJax_MousePost {outline: none}
+.MathJax_Menu {position: absolute; background-color: white; color: black; width: auto; padding: 2px; border: 1px solid #CCCCCC; margin: 0; cursor: default; font: menu; text-align: left; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; z-index: 201; box-shadow: 0px 10px 20px #808080; -webkit-box-shadow: 0px 10px 20px #808080; -moz-box-shadow: 0px 10px 20px #808080; -khtml-box-shadow: 0px 10px 20px #808080; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+.MathJax_MenuItem {padding: 2px 2em; background: transparent}
+.MathJax_MenuArrow {position: absolute; right: .5em; padding-top: .25em; color: #666666; font-size: .75em}
+.MathJax_MenuActive .MathJax_MenuArrow {color: white}
+.MathJax_MenuArrow.RTL {left: .5em; right: auto}
+.MathJax_MenuCheck {position: absolute; left: .7em}
+.MathJax_MenuCheck.RTL {right: .7em; left: auto}
+.MathJax_MenuRadioCheck {position: absolute; left: 1em}
+.MathJax_MenuRadioCheck.RTL {right: 1em; left: auto}
+.MathJax_MenuLabel {padding: 2px 2em 4px 1.33em; font-style: italic}
+.MathJax_MenuRule {border-top: 1px solid #CCCCCC; margin: 4px 1px 0px}
+.MathJax_MenuDisabled {color: GrayText}
+.MathJax_MenuActive {background-color: Highlight; color: HighlightText}
+.MathJax_MenuDisabled:focus, .MathJax_MenuLabel:focus {background-color: #E8E8E8}
+.MathJax_ContextMenu:focus {outline: none}
+.MathJax_ContextMenu .MathJax_MenuItem:focus {outline: none}
+#MathJax_AboutClose {top: .2em; right: .2em}
+.MathJax_Menu .MathJax_MenuClose {top: -10px; left: -10px}
+.MathJax_MenuClose {position: absolute; cursor: pointer; display: inline-block; border: 2px solid #AAA; border-radius: 18px; -webkit-border-radius: 18px; -moz-border-radius: 18px; -khtml-border-radius: 18px; font-family: 'Courier New',Courier; font-size: 24px; color: #F0F0F0}
+.MathJax_MenuClose span {display: block; background-color: #AAA; border: 1.5px solid; border-radius: 18px; -webkit-border-radius: 18px; -moz-border-radius: 18px; -khtml-border-radius: 18px; line-height: 0; padding: 8px 0 6px}
+.MathJax_MenuClose:hover {color: white!important; border: 2px solid #CCC!important}
+.MathJax_MenuClose:hover span {background-color: #CCC!important}
+.MathJax_MenuClose:hover:focus {outline: none}
+</style><style type="text/css">.MathJax_Preview .MJXf-math {color: inherit!important}
+</style><style type="text/css">.MJX_Assistive_MathML {position: absolute!important; top: 0; left: 0; clip: rect(1px, 1px, 1px, 1px); padding: 1px 0 0 0!important; border: 0!important; height: 1px!important; width: 1px!important; overflow: hidden!important; display: block!important; -webkit-touch-callout: none; -webkit-user-select: none; -khtml-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none}
+.MJX_Assistive_MathML.MJX_Assistive_MathML_Block {width: 100%!important}
+</style><style type="text/css">#MathJax_Zoom {position: absolute; background-color: #F0F0F0; overflow: auto; display: block; z-index: 301; padding: .5em; border: 1px solid black; margin: 0; font-weight: normal; font-style: normal; text-align: left; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; -webkit-box-sizing: content-box; -moz-box-sizing: content-box; box-sizing: content-box; box-shadow: 5px 5px 15px #AAAAAA; -webkit-box-shadow: 5px 5px 15px #AAAAAA; -moz-box-shadow: 5px 5px 15px #AAAAAA; -khtml-box-shadow: 5px 5px 15px #AAAAAA; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+#MathJax_ZoomOverlay {position: absolute; left: 0; top: 0; z-index: 300; display: inline-block; width: 100%; height: 100%; border: 0; padding: 0; margin: 0; background-color: white; opacity: 0; filter: alpha(opacity=0)}
+#MathJax_ZoomFrame {position: relative; display: inline-block; height: 0; width: 0}
+#MathJax_ZoomEventTrap {position: absolute; left: 0; top: 0; z-index: 302; display: inline-block; border: 0; padding: 0; margin: 0; background-color: white; opacity: 0; filter: alpha(opacity=0)}
+</style><style type="text/css">.MathJax_Preview {color: #888}
+#MathJax_Message {position: fixed; left: 1em; bottom: 1.5em; background-color: #E6E6E6; border: 1px solid #959595; margin: 0px; padding: 2px 8px; z-index: 102; color: black; font-size: 80%; width: auto; white-space: nowrap}
+#MathJax_MSIE_Frame {position: absolute; top: 0; left: 0; width: 0px; z-index: 101; border: 0px; margin: 0px; padding: 0px}
+.MathJax_Error {color: #CC0000; font-style: italic}
+</style><style type="text/css">.MJXp-script {font-size: .8em}
+.MJXp-right {-webkit-transform-origin: right; -moz-transform-origin: right; -ms-transform-origin: right; -o-transform-origin: right; transform-origin: right}
+.MJXp-bold {font-weight: bold}
+.MJXp-italic {font-style: italic}
+.MJXp-scr {font-family: MathJax_Script,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-frak {font-family: MathJax_Fraktur,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-sf {font-family: MathJax_SansSerif,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-cal {font-family: MathJax_Caligraphic,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-mono {font-family: MathJax_Typewriter,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-largeop {font-size: 150%}
+.MJXp-largeop.MJXp-int {vertical-align: -.2em}
+.MJXp-math {display: inline-block; line-height: 1.2; text-indent: 0; font-family: 'Times New Roman',Times,STIXGeneral,serif; white-space: nowrap; border-collapse: collapse}
+.MJXp-display {display: block; text-align: center; margin: 1em 0}
+.MJXp-math span {display: inline-block}
+.MJXp-box {display: block!important; text-align: center}
+.MJXp-box:after {content: " "}
+.MJXp-rule {display: block!important; margin-top: .1em}
+.MJXp-char {display: block!important}
+.MJXp-mo {margin: 0 .15em}
+.MJXp-mfrac {margin: 0 .125em; vertical-align: .25em}
+.MJXp-denom {display: inline-table!important; width: 100%}
+.MJXp-denom > * {display: table-row!important}
+.MJXp-surd {vertical-align: top}
+.MJXp-surd > * {display: block!important}
+.MJXp-script-box > *  {display: table!important; height: 50%}
+.MJXp-script-box > * > * {display: table-cell!important; vertical-align: top}
+.MJXp-script-box > *:last-child > * {vertical-align: bottom}
+.MJXp-script-box > * > * > * {display: block!important}
+.MJXp-mphantom {visibility: hidden}
+.MJXp-munderover {display: inline-table!important}
+.MJXp-over {display: inline-block!important; text-align: center}
+.MJXp-over > * {display: block!important}
+.MJXp-munderover > * {display: table-row!important}
+.MJXp-mtable {vertical-align: .25em; margin: 0 .125em}
+.MJXp-mtable > * {display: inline-table!important; vertical-align: middle}
+.MJXp-mtr {display: table-row!important}
+.MJXp-mtd {display: table-cell!important; text-align: center; padding: .5em 0 0 .5em}
+.MJXp-mtr > .MJXp-mtd:first-child {padding-left: 0}
+.MJXp-mtr:first-child > .MJXp-mtd {padding-top: 0}
+.MJXp-mlabeledtr {display: table-row!important}
+.MJXp-mlabeledtr > .MJXp-mtd:first-child {padding-left: 0}
+.MJXp-mlabeledtr:first-child > .MJXp-mtd {padding-top: 0}
+.MJXp-merror {background-color: #FFFF88; color: #CC0000; border: 1px solid #CC0000; padding: 1px 3px; font-style: normal; font-size: 90%}
+.MJXp-scale0 {-webkit-transform: scaleX(.0); -moz-transform: scaleX(.0); -ms-transform: scaleX(.0); -o-transform: scaleX(.0); transform: scaleX(.0)}
+.MJXp-scale1 {-webkit-transform: scaleX(.1); -moz-transform: scaleX(.1); -ms-transform: scaleX(.1); -o-transform: scaleX(.1); transform: scaleX(.1)}
+.MJXp-scale2 {-webkit-transform: scaleX(.2); -moz-transform: scaleX(.2); -ms-transform: scaleX(.2); -o-transform: scaleX(.2); transform: scaleX(.2)}
+.MJXp-scale3 {-webkit-transform: scaleX(.3); -moz-transform: scaleX(.3); -ms-transform: scaleX(.3); -o-transform: scaleX(.3); transform: scaleX(.3)}
+.MJXp-scale4 {-webkit-transform: scaleX(.4); -moz-transform: scaleX(.4); -ms-transform: scaleX(.4); -o-transform: scaleX(.4); transform: scaleX(.4)}
+.MJXp-scale5 {-webkit-transform: scaleX(.5); -moz-transform: scaleX(.5); -ms-transform: scaleX(.5); -o-transform: scaleX(.5); transform: scaleX(.5)}
+.MJXp-scale6 {-webkit-transform: scaleX(.6); -moz-transform: scaleX(.6); -ms-transform: scaleX(.6); -o-transform: scaleX(.6); transform: scaleX(.6)}
+.MJXp-scale7 {-webkit-transform: scaleX(.7); -moz-transform: scaleX(.7); -ms-transform: scaleX(.7); -o-transform: scaleX(.7); transform: scaleX(.7)}
+.MJXp-scale8 {-webkit-transform: scaleX(.8); -moz-transform: scaleX(.8); -ms-transform: scaleX(.8); -o-transform: scaleX(.8); transform: scaleX(.8)}
+.MJXp-scale9 {-webkit-transform: scaleX(.9); -moz-transform: scaleX(.9); -ms-transform: scaleX(.9); -o-transform: scaleX(.9); transform: scaleX(.9)}
+.MathJax_PHTML .noError {vertical-align: ; font-size: 90%; text-align: left; color: black; padding: 1px 3px; border: 1px solid}
+</style></head>
+
+<body><div id="MathJax_Message" style="display: none;"></div>
+
+<style type="text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img { 
+  max-width:100%; 
+  height: auto; 
+}
+</style>
+<div class="container-fluid main-container">
+
+
+<div id="header">
+<h1 class="title">Exploring SF Crime Data</h1>
+<h4 class="author"><em>Mark Pratley</em></h4>
+<h4 class="date"><em>29 january 2016</em></h4>
+</div>
+
+
+<div id="intro" class="section level2">
+<h2>Intro</h2>
+<p>I recently stumbled onto the <a href="https://data.sfgov.org/Public-Safety/SFPD-Incidents-from-1-January-2003/tmnf-yvry">San Francisco Police Deparatment’s Incidents Dataset</a>, which caught my interest and I decided to investigate further.</p>
+<p><a href="https://data.sfgov.org/api/views/tmnf-yvry/rows.csv?accessType=DOWNLOAD">This</a> dataset contains records of all the Incidents derived from SFPD Crime Incident Reporting system from 01/01/2003 up until 31/12/2014.</p>
+<p>It contains almost 2 million incidents, where each incident has 13 data variables showing the Category, Description, and Resolution of the incident along with Date, Time and Location details.</p>
+<p>From these it is possible to explore the data in some detail and also create some geo-data maps of incident locations.</p>
+<p>Let’s firstly take a look at the main types of information it contains.</p>
+</div>
+<div id="categories" class="section level2">
+<h2>Categories</h2>
+<p>Category is a broad umbrella term to easily determine the nature of the incident. There are 39 categories with these being the most numerous:</p>
+<pre class="r"><code class="r"><span class="identifier">sf.data</span> <span class="operator">%&gt;%</span>
+    <span class="identifier">group_by</span><span class="paren">(</span><span class="identifier">Category</span><span class="paren">)</span> <span class="operator">%&gt;%</span> 
+    <span class="identifier">summarise</span><span class="paren">(</span><span class="identifier">Num</span><span class="operator">=</span><span class="identifier">n</span><span class="paren">(</span><span class="paren">)</span><span class="paren">)</span> <span class="operator">%&gt;%</span> 
+    <span class="identifier">arrange</span><span class="paren">(</span><span class="identifier">desc</span><span class="paren">(</span><span class="identifier">Num</span><span class="paren">)</span><span class="paren">)</span> <span class="operator">%&gt;%</span> 
+    <span class="identifier">head</span><span class="paren">(</span><span class="paren">)</span> <span class="operator">%&gt;%</span> 
+    <span class="identifier">kable</span><span class="paren">(</span><span class="paren">)</span></code></pre>
+<table class="table table-condensed">
+<thead>
+<tr class="header">
+<th align="left">Category</th>
+<th align="right">Num</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Larceny/Theft</td>
+<td align="right">374680</td>
+</tr>
+<tr class="even">
+<td align="left">Other Offenses</td>
+<td align="right">263432</td>
+</tr>
+<tr class="odd">
+<td align="left">Non-Criminal</td>
+<td align="right">195806</td>
+</tr>
+<tr class="even">
+<td align="left">Assault</td>
+<td align="right">161609</td>
+</tr>
+<tr class="odd">
+<td align="left">Vehicle Theft</td>
+<td align="right">112148</td>
+</tr>
+<tr class="even">
+<td align="left">Drug/Narcotic</td>
+<td align="right">110181</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code class="r"><span class="identifier">sf.data</span> <span class="operator">%&gt;%</span>
+    <span class="identifier">select</span><span class="paren">(</span><span class="identifier">Category</span><span class="paren">)</span> <span class="operator">%&gt;%</span> 
+    <span class="identifier">group_by</span><span class="paren">(</span><span class="identifier">Category</span><span class="paren">)</span> <span class="operator">%&gt;%</span>
+    <span class="identifier">summarise</span><span class="paren">(</span><span class="identifier">Num</span><span class="operator">=</span><span class="identifier">n</span><span class="paren">(</span><span class="paren">)</span><span class="paren">)</span> <span class="operator">%&gt;%</span> 
+    <span class="identifier">arrange</span><span class="paren">(</span><span class="identifier">desc</span><span class="paren">(</span><span class="identifier">Num</span><span class="paren">)</span><span class="paren">)</span> <span class="operator">%&gt;%</span> 
+    <span class="identifier">head</span><span class="paren">(</span><span class="number">7</span><span class="paren">)</span> <span class="operator">%&gt;%</span> 
+    
+    <span class="identifier">ggplot</span><span class="paren">(</span><span class="identifier">aes</span><span class="paren">(</span><span class="identifier">x</span><span class="operator">=</span><span class="identifier">Category</span>, <span class="identifier">y</span><span class="operator">=</span><span class="identifier">Num</span><span class="paren">)</span><span class="paren">)</span> <span class="operator">+</span>
+        <span class="identifier">geom_bar</span><span class="paren">(</span><span class="identifier">stat</span> <span class="operator">=</span> <span class="string">"identity"</span>, <span class="identifier">aes</span><span class="paren">(</span><span class="identifier">fill</span><span class="operator">=</span><span class="identifier">Category</span><span class="paren">)</span><span class="paren">)</span> <span class="operator">+</span>
+        <span class="identifier">theme</span><span class="paren">(</span><span class="identifier">axis.text.x</span><span class="operator">=</span><span class="identifier">element_blank</span><span class="paren">(</span><span class="paren">)</span><span class="paren">)</span> <span class="operator">+</span>
+        <span class="identifier">labs</span><span class="paren">(</span><span class="identifier">x</span><span class="operator">=</span><span class="string">"Category"</span>,
+             <span class="identifier">y</span> <span class="operator">=</span> <span class="string">"Number"</span>,
+             <span class="identifier">title</span><span class="operator">=</span><span class="string">"Top Incident Categories"</span><span class="paren">)</span> <span class="operator">+</span>
+        <span class="identifier">scale_y_continuous</span><span class="paren">(</span><span class="identifier">labels</span> <span class="operator">=</span> <span class="identifier">comma</span><span class="paren">)</span></code></pre>
+<p><img src="./2016-01-29-San-Fransisco-Crime_files/top-crime-categories-1.png" title="" alt="" width="768"></p>
+</div>
+<div id="crime-type" class="section level2">
+<h2>Crime Type</h2>
+<p>The dataset also contains a finer grain summary of each incident; these examples are from taken from the Drug/Narcotic category:</p>
+<pre class="r"><code class="r"><span class="identifier">sf.data</span> <span class="operator">%&gt;%</span> 
+    <span class="identifier">filter</span><span class="paren">(</span><span class="identifier">Category</span><span class="operator">==</span><span class="string">"Drug/Narcotic"</span><span class="paren">)</span> <span class="operator">%&gt;%</span> 
+    <span class="identifier">group_by</span><span class="paren">(</span><span class="identifier">Descript</span><span class="paren">)</span> <span class="operator">%&gt;%</span> 
+    <span class="identifier">summarise</span><span class="paren">(</span><span class="identifier">Num</span><span class="operator">=</span><span class="identifier">n</span><span class="paren">(</span><span class="paren">)</span><span class="paren">)</span> <span class="operator">%&gt;%</span> 
+    <span class="identifier">arrange</span><span class="paren">(</span><span class="identifier">desc</span><span class="paren">(</span><span class="identifier">Num</span><span class="paren">)</span><span class="paren">)</span> <span class="operator">%&gt;%</span> 
+    <span class="identifier">head</span><span class="paren">(</span><span class="paren">)</span> <span class="operator">%&gt;%</span> 
+    <span class="identifier">kable</span><span class="paren">(</span><span class="paren">)</span></code></pre>
+<table class="table table-condensed">
+<thead>
+<tr class="header">
+<th align="left">Descript</th>
+<th align="right">Num</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Possession Of Narcotics Paraphernalia</td>
+<td align="right">20486</td>
+</tr>
+<tr class="even">
+<td align="left">Possession Of Base/Rock Cocaine</td>
+<td align="right">14109</td>
+</tr>
+<tr class="odd">
+<td align="left">Possession Of Marijuana</td>
+<td align="right">11228</td>
+</tr>
+<tr class="even">
+<td align="left">Sale Of Base/Rock Cocaine</td>
+<td align="right">8805</td>
+</tr>
+<tr class="odd">
+<td align="left">Possession Of Meth-Amphetamine</td>
+<td align="right">7551</td>
+</tr>
+<tr class="even">
+<td align="left">Possession Of Base/Rock Cocaine For Sale</td>
+<td align="right">7364</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="resolution" class="section level2">
+<h2>Resolution</h2>
+<p>The outcome of the incident. Shown below are most common outcomes in the Weapon Laws category.</p>
+<pre class="r"><code class="r"><span class="identifier">sf.data</span> <span class="operator">%&gt;%</span> 
+    <span class="identifier">filter</span><span class="paren">(</span><span class="identifier">Category</span><span class="operator">==</span><span class="string">"Weapon Laws"</span><span class="paren">)</span> <span class="operator">%&gt;%</span> 
+    <span class="identifier">group_by</span><span class="paren">(</span><span class="identifier">Resolution</span><span class="paren">)</span> <span class="operator">%&gt;%</span> 
+    <span class="identifier">summarise</span><span class="paren">(</span><span class="identifier">Num</span><span class="operator">=</span><span class="identifier">n</span><span class="paren">(</span><span class="paren">)</span><span class="paren">)</span> <span class="operator">%&gt;%</span> 
+    <span class="identifier">arrange</span><span class="paren">(</span><span class="identifier">desc</span><span class="paren">(</span><span class="identifier">Num</span><span class="paren">)</span><span class="paren">)</span> <span class="operator">%&gt;%</span> 
+    <span class="identifier">head</span><span class="paren">(</span><span class="paren">)</span> <span class="operator">%&gt;%</span> 
+    <span class="identifier">kable</span><span class="paren">(</span><span class="paren">)</span></code></pre>
+<table class="table table-condensed">
+<thead>
+<tr class="header">
+<th align="left">Resolution</th>
+<th align="right">Num</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Arrest, Booked</td>
+<td align="right">10554</td>
+</tr>
+<tr class="even">
+<td align="left">None</td>
+<td align="right">4874</td>
+</tr>
+<tr class="odd">
+<td align="left">Arrest, Cited</td>
+<td align="right">1156</td>
+</tr>
+<tr class="even">
+<td align="left">Juvenile Booked</td>
+<td align="right">636</td>
+</tr>
+<tr class="odd">
+<td align="left">Juvenile Cited</td>
+<td align="right">262</td>
+</tr>
+<tr class="even">
+<td align="left">Juvenile Admonished</td>
+<td align="right">191</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="arrested" class="section level2">
+<h2>Arrested?</h2>
+<p>For ease of analysis a new ‘Arrested’ variable was created which simplifies two arrest resolutions (“Arrest, Booked” and “Arrest, Cited”) as 1, and all the other Resolutions as 0.</p>
+<pre class="r"><code class="r"><span class="identifier">sf.data</span> <span class="operator">&lt;-</span> <span class="identifier">sf.data</span> <span class="operator">%&gt;%</span> 
+            <span class="identifier">mutate</span><span class="paren">(</span><span class="identifier">Arrested</span><span class="operator">=</span><span class="identifier">ifelse</span><span class="paren">(</span><span class="identifier">grepl</span><span class="paren">(</span><span class="string">"Arrest"</span>, <span class="identifier">Resolution</span><span class="paren">)</span>, <span class="number">1</span>, <span class="number">0</span><span class="paren">)</span><span class="paren">)</span></code></pre>
+<p>This allows us to easily show the incidents with the highest arrest rate:</p>
+<pre class="r"><code class="r"><span class="identifier">sf.data</span> <span class="operator">%&gt;%</span> 
+    <span class="identifier">group_by</span><span class="paren">(</span><span class="identifier">Category</span><span class="paren">)</span> <span class="operator">%&gt;%</span> 
+    <span class="identifier">summarise</span><span class="paren">(</span><span class="identifier">Num</span><span class="operator">=</span><span class="identifier">n</span><span class="paren">(</span><span class="paren">)</span>, 
+              <span class="identifier">Arrested</span><span class="operator">=</span><span class="identifier">sum</span><span class="paren">(</span><span class="identifier">Arrested</span><span class="paren">)</span>, 
+              <span class="identifier">PercentArrested</span><span class="operator">=</span><span class="identifier">round</span><span class="paren">(</span><span class="number">100</span><span class="operator">*</span><span class="identifier">sum</span><span class="paren">(</span><span class="identifier">Arrested</span><span class="paren">)</span><span class="operator">/</span><span class="identifier">n</span><span class="paren">(</span><span class="paren">)</span>, <span class="number">0</span><span class="paren">)</span><span class="paren">)</span> <span class="operator">%&gt;%</span>
+    <span class="identifier">arrange</span><span class="paren">(</span><span class="identifier">desc</span><span class="paren">(</span><span class="identifier">PercentArrested</span><span class="paren">)</span><span class="paren">)</span> <span class="operator">%&gt;%</span> 
+    <span class="identifier">head</span><span class="paren">(</span><span class="number">9</span><span class="paren">)</span> <span class="operator">%&gt;%</span> 
+    <span class="identifier">kable</span><span class="paren">(</span><span class="paren">)</span></code></pre>
+<table class="table table-condensed">
+<thead>
+<tr class="header">
+<th align="left">Category</th>
+<th align="right">Num</th>
+<th align="right">Arrested</th>
+<th align="right">PercentArrested</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Driving Under The Influence</td>
+<td align="right">4867</td>
+<td align="right">4558</td>
+<td align="right">94</td>
+</tr>
+<tr class="even">
+<td align="left">Prostitution</td>
+<td align="right">15429</td>
+<td align="right">14434</td>
+<td align="right">94</td>
+</tr>
+<tr class="odd">
+<td align="left">Warrants</td>
+<td align="right">87945</td>
+<td align="right">81579</td>
+<td align="right">93</td>
+</tr>
+<tr class="even">
+<td align="left">Drug/Narcotic</td>
+<td align="right">110181</td>
+<td align="right">98538</td>
+<td align="right">89</td>
+</tr>
+<tr class="odd">
+<td align="left">Loitering</td>
+<td align="right">2340</td>
+<td align="right">2040</td>
+<td align="right">87</td>
+</tr>
+<tr class="even">
+<td align="left">Liquor Laws</td>
+<td align="right">3821</td>
+<td align="right">3221</td>
+<td align="right">84</td>
+</tr>
+<tr class="odd">
+<td align="left">Stolen Property</td>
+<td align="right">9825</td>
+<td align="right">8060</td>
+<td align="right">82</td>
+</tr>
+<tr class="even">
+<td align="left">Drunkenness</td>
+<td align="right">8882</td>
+<td align="right">7212</td>
+<td align="right">81</td>
+</tr>
+<tr class="odd">
+<td align="left">Other Offenses</td>
+<td align="right">263432</td>
+<td align="right">183513</td>
+<td align="right">70</td>
+</tr>
+</tbody>
+</table>
+<p>And also the incidents with the lowest:</p>
+<pre class="r"><code class="r"><span class="identifier">sf.data</span> <span class="operator">%&gt;%</span> 
+    <span class="identifier">group_by</span><span class="paren">(</span><span class="identifier">Category</span><span class="paren">)</span> <span class="operator">%&gt;%</span> 
+    <span class="identifier">summarise</span><span class="paren">(</span><span class="identifier">Num</span><span class="operator">=</span><span class="identifier">n</span><span class="paren">(</span><span class="paren">)</span>, 
+              <span class="identifier">Arrested</span><span class="operator">=</span><span class="identifier">sum</span><span class="paren">(</span><span class="identifier">Arrested</span><span class="paren">)</span>, 
+              <span class="identifier">PercentArrested</span><span class="operator">=</span><span class="identifier">round</span><span class="paren">(</span><span class="number">100</span><span class="operator">*</span><span class="identifier">sum</span><span class="paren">(</span><span class="identifier">Arrested</span><span class="paren">)</span><span class="operator">/</span><span class="identifier">n</span><span class="paren">(</span><span class="paren">)</span>, <span class="number">0</span><span class="paren">)</span><span class="paren">)</span> <span class="operator">%&gt;%</span>
+    <span class="identifier">arrange</span><span class="paren">(</span><span class="identifier">desc</span><span class="paren">(</span><span class="identifier">PercentArrested</span><span class="paren">)</span><span class="paren">)</span> <span class="operator">%&gt;%</span> 
+    <span class="identifier">tail</span><span class="paren">(</span><span class="number">9</span><span class="paren">)</span> <span class="operator">%&gt;%</span> 
+    <span class="identifier">kable</span><span class="paren">(</span><span class="paren">)</span></code></pre>
+<table class="table table-condensed">
+<thead>
+<tr class="header">
+<th align="left">Category</th>
+<th align="right">Num</th>
+<th align="right">Arrested</th>
+<th align="right">PercentArrested</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Larceny/Theft</td>
+<td align="right">374680</td>
+<td align="right">31419</td>
+<td align="right">8</td>
+</tr>
+<tr class="even">
+<td align="left">Recovered Vehicle</td>
+<td align="right">6346</td>
+<td align="right">395</td>
+<td align="right">6</td>
+</tr>
+<tr class="odd">
+<td align="left">Bad Checks</td>
+<td align="right">849</td>
+<td align="right">45</td>
+<td align="right">5</td>
+</tr>
+<tr class="even">
+<td align="left">Non-Criminal</td>
+<td align="right">195806</td>
+<td align="right">10082</td>
+<td align="right">5</td>
+</tr>
+<tr class="odd">
+<td align="left">Suspicious Occ</td>
+<td align="right">66176</td>
+<td align="right">2926</td>
+<td align="right">4</td>
+</tr>
+<tr class="even">
+<td align="left">Vehicle Theft</td>
+<td align="right">112148</td>
+<td align="right">4381</td>
+<td align="right">4</td>
+</tr>
+<tr class="odd">
+<td align="left">Suicide</td>
+<td align="right">1108</td>
+<td align="right">32</td>
+<td align="right">3</td>
+</tr>
+<tr class="even">
+<td align="left">Missing Person</td>
+<td align="right">54344</td>
+<td align="right">1224</td>
+<td align="right">2</td>
+</tr>
+<tr class="odd">
+<td align="left">Runaway</td>
+<td align="right">3957</td>
+<td align="right">17</td>
+<td align="right">0</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="highest-arrested-percent-crimes" class="section level2">
+<h2>Highest Arrested Percent Crimes</h2>
+<pre class="r"><code class="r"><span class="identifier">sf.data</span> <span class="operator">%&gt;%</span> 
+    <span class="identifier">group_by</span><span class="paren">(</span><span class="identifier">Category</span><span class="paren">)</span> <span class="operator">%&gt;%</span> 
+    <span class="identifier">summarise</span><span class="paren">(</span><span class="identifier">Num</span><span class="operator">=</span><span class="identifier">n</span><span class="paren">(</span><span class="paren">)</span>, 
+              <span class="identifier">Arrested</span><span class="operator">=</span><span class="identifier">sum</span><span class="paren">(</span><span class="identifier">Arrested</span><span class="paren">)</span>, 
+              <span class="identifier">Percent</span><span class="operator">=</span><span class="identifier">round</span><span class="paren">(</span><span class="number">100</span><span class="operator">*</span><span class="identifier">sum</span><span class="paren">(</span><span class="identifier">Arrested</span><span class="paren">)</span><span class="operator">/</span><span class="identifier">n</span><span class="paren">(</span><span class="paren">)</span>, <span class="number">0</span><span class="paren">)</span><span class="paren">)</span> <span class="operator">%&gt;%</span>
+    <span class="identifier">arrange</span><span class="paren">(</span><span class="identifier">desc</span><span class="paren">(</span><span class="identifier">Percent</span><span class="paren">)</span><span class="paren">)</span> <span class="operator">%&gt;%</span> 
+    <span class="identifier">head</span><span class="paren">(</span><span class="number">9</span><span class="paren">)</span> <span class="operator">%&gt;%</span> 
+    
+    <span class="identifier">ggplot</span><span class="paren">(</span><span class="identifier">aes</span><span class="paren">(</span><span class="identifier">x</span><span class="operator">=</span><span class="identifier">reorder</span><span class="paren">(</span><span class="identifier">Category</span>, <span class="operator">-</span><span class="identifier">Percent</span><span class="paren">)</span>,
+               <span class="identifier">y</span><span class="operator">=</span><span class="identifier">Percent</span>, 
+               <span class="identifier">fill</span><span class="operator">=</span><span class="identifier">reorder</span><span class="paren">(</span><span class="identifier">Category</span>, <span class="operator">-</span><span class="identifier">Percent</span><span class="paren">)</span><span class="paren">)</span><span class="paren">)</span> <span class="operator">+</span>
+        <span class="identifier">geom_bar</span><span class="paren">(</span><span class="identifier">stat</span> <span class="operator">=</span> <span class="string">"identity"</span><span class="paren">)</span> <span class="operator">+</span>
+    <span class="identifier">theme</span><span class="paren">(</span><span class="identifier">axis.text.x</span><span class="operator">=</span><span class="identifier">element_blank</span><span class="paren">(</span><span class="paren">)</span>,
+          <span class="identifier">legend.title</span><span class="operator">=</span><span class="identifier">element_blank</span><span class="paren">(</span><span class="paren">)</span><span class="paren">)</span> <span class="operator">+</span>
+    <span class="identifier">labs</span><span class="paren">(</span><span class="identifier">x</span><span class="operator">=</span><span class="string">"Category"</span>,
+         <span class="identifier">y</span> <span class="operator">=</span> <span class="string">"Percent Arrested"</span>,
+         <span class="identifier">title</span><span class="operator">=</span><span class="string">"Percent Arrested per Category of Incident"</span><span class="paren">)</span> <span class="operator">+</span>
+    <span class="identifier">ylim</span><span class="paren">(</span><span class="identifier">c</span><span class="paren">(</span><span class="number">0</span>,<span class="number">100</span><span class="paren">)</span><span class="paren">)</span></code></pre>
+<p><img src="./2016-01-29-San-Fransisco-Crime_files/Highest-Arrested-Percent-Crimes-1.png" title="" alt="" width="768"></p>
+</div>
+<div id="robberytheft-data" class="section level2">
+<h2>Robbery/Theft Data</h2>
+<p>Having briefly looked at arrest rates, let’s move onto crime location.</p>
+<p>As a visitor to San Fransisco the crimes that would interest me most (in a can I avoid them kind of way) would probably be robbery and theft.</p>
+<p>These appear to grouped under the following descriptions:</p>
+<pre class="r"><code class="r"><span class="identifier">sf.p.lt</span> <span class="operator">&lt;-</span> 
+    <span class="identifier">sf.data</span> <span class="operator">%&gt;%</span> 
+    <span class="identifier">filter</span><span class="paren">(</span><span class="identifier">Category</span><span class="operator">==</span><span class="string">"Larceny/Theft"</span> <span class="operator">&amp;</span>
+            <span class="identifier">grepl</span><span class="paren">(</span><span class="string">"Person|Pursesnatch|Pickpocket|Credit Card"</span>, <span class="identifier">Descript</span><span class="paren">)</span> <span class="operator">|</span>
+           <span class="identifier">Category</span><span class="operator">==</span><span class="string">"Robbery"</span> <span class="operator">&amp;</span> 
+            <span class="operator">!</span><span class="identifier">grepl</span><span class="paren">(</span><span class="string">"Bank|Carjacking|Store|Residence|Vehicle|Station|Estab"</span>, <span class="identifier">Descript</span><span class="paren">)</span><span class="paren">)</span>
+
+<span class="identifier">sf.p.lt</span> <span class="operator">%&gt;%</span> 
+    <span class="identifier">group_by</span><span class="paren">(</span><span class="identifier">Descript</span><span class="paren">)</span> <span class="operator">%&gt;%</span> 
+    <span class="identifier">summarise</span><span class="paren">(</span><span class="identifier">Num</span><span class="operator">=</span><span class="identifier">n</span><span class="paren">(</span><span class="paren">)</span><span class="paren">)</span> <span class="operator">%&gt;%</span> 
+    <span class="identifier">arrange</span><span class="paren">(</span><span class="identifier">desc</span><span class="paren">(</span><span class="identifier">Num</span><span class="paren">)</span><span class="paren">)</span> <span class="operator">%&gt;%</span> 
+    <span class="identifier">head</span><span class="paren">(</span><span class="number">10</span><span class="paren">)</span> <span class="operator">%&gt;%</span> 
+    <span class="identifier">kable</span><span class="paren">(</span><span class="paren">)</span></code></pre>
+<table class="table table-condensed">
+<thead>
+<tr class="header">
+<th align="left">Descript</th>
+<th align="right">Num</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Grand Theft From Person</td>
+<td align="right">14799</td>
+</tr>
+<tr class="even">
+<td align="left">Robbery On The Street, Strongarm</td>
+<td align="right">13837</td>
+</tr>
+<tr class="odd">
+<td align="left">Grand Theft Pickpocket</td>
+<td align="right">11728</td>
+</tr>
+<tr class="even">
+<td align="left">Robbery, Bodily Force</td>
+<td align="right">9407</td>
+</tr>
+<tr class="odd">
+<td align="left">Robbery On The Street With A Gun</td>
+<td align="right">4278</td>
+</tr>
+<tr class="even">
+<td align="left">Attempted Robbery On The Street With Bodily Force</td>
+<td align="right">2349</td>
+</tr>
+<tr class="odd">
+<td align="left">Robbery, Armed With A Gun</td>
+<td align="right">2292</td>
+</tr>
+<tr class="even">
+<td align="left">Attempted Robbery With Bodily Force</td>
+<td align="right">1610</td>
+</tr>
+<tr class="odd">
+<td align="left">Robbery On The Street With A Knife</td>
+<td align="right">1535</td>
+</tr>
+<tr class="even">
+<td align="left">Grand Theft Pursesnatch</td>
+<td align="right">1487</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="robberytheft-incidents-map" class="section level2">
+<h2>Robbery/Theft Incidents Map</h2>
+<pre class="r"><code class="r"><span class="identifier">sf.big.box</span> <span class="operator">=</span> <span class="identifier">c</span><span class="paren">(</span><span class="operator">-</span><span class="number">122.52</span>,<span class="number">37.7</span>,<span class="operator">-</span><span class="number">122.35</span>,<span class="number">37.82</span><span class="paren">)</span>
+<span class="identifier">big.map</span> <span class="operator">&lt;-</span> <span class="identifier">get_map</span><span class="paren">(</span><span class="identifier">location</span> <span class="operator">=</span> <span class="identifier">sf.big.box</span><span class="paren">)</span></code></pre>
+<pre class="r"><code class="r"><span class="identifier">ggmap</span><span class="paren">(</span><span class="identifier">big.map</span><span class="paren">)</span> <span class="operator">+</span>
+    <span class="identifier">geom_point</span><span class="paren">(</span><span class="identifier">data</span> <span class="operator">=</span> <span class="identifier">sf.p.lt</span>, <span class="identifier">aes</span><span class="paren">(</span><span class="identifier">x</span><span class="operator">=</span><span class="identifier">X</span>, <span class="identifier">y</span><span class="operator">=</span><span class="identifier">Y</span><span class="paren">)</span>, 
+               <span class="identifier">color</span> <span class="operator">=</span> <span class="string">"red"</span>, <span class="identifier">size</span> <span class="operator">=</span> <span class="number">0.6</span>, <span class="identifier">alpha</span> <span class="operator">=</span> <span class="number">0.3</span><span class="paren">)</span> <span class="operator">+</span>
+    <span class="identifier">labs</span><span class="paren">(</span><span class="identifier">title</span> <span class="operator">=</span> <span class="string">"Locations of Robbery/Theft Incidents in San Francisco"</span><span class="paren">)</span></code></pre>
+<p><img src="./2016-01-29-San-Fransisco-Crime_files/p.lt-map-1.png" title="" alt="" width="768"></p>
+<p>This map shows that Robbery/Theft occurs all over SF, but gives little indication of which areas are better or worse than others.</p>
+</div>
+<div id="robberytheft-contour-map" class="section level2">
+<h2>Robbery/Theft Contour Map</h2>
+<p>Let’s look at a contour map and see if there are any hotspots.</p>
+<pre class="r"><code class="r"><span class="comment"># Larceny/Theft Contours</span>
+<span class="identifier">ggmap</span><span class="paren">(</span><span class="identifier">big.map</span>, <span class="identifier">extent</span><span class="operator">=</span><span class="string">'device'</span>, <span class="identifier">legend</span><span class="operator">=</span><span class="string">"bottomright"</span><span class="paren">)</span> <span class="operator">+</span> 
+    <span class="identifier">stat_density2d</span><span class="paren">(</span><span class="identifier">data</span> <span class="operator">=</span> <span class="identifier">sf.p.lt</span>,
+        <span class="identifier">aes</span><span class="paren">(</span><span class="identifier">x</span> <span class="operator">=</span> <span class="identifier">X</span>, <span class="identifier">y</span> <span class="operator">=</span> <span class="identifier">Y</span>, <span class="identifier">fill</span> <span class="operator">=</span> <span class="identifier">..level</span>.., <span class="identifier">alpha</span><span class="operator">=</span><span class="identifier">..level</span>..<span class="paren">)</span>,
+        <span class="identifier">size</span> <span class="operator">=</span> <span class="number">0.1</span>, <span class="identifier">colour</span><span class="operator">=</span><span class="string">"red"</span>, <span class="identifier">n</span><span class="operator">=</span><span class="number">100</span>, <span class="identifier">geom</span> <span class="operator">=</span> <span class="string">"polygon"</span><span class="paren">)</span> <span class="operator">+</span>
+    <span class="identifier">scale_alpha_continuous</span><span class="paren">(</span><span class="identifier">range</span><span class="operator">=</span><span class="identifier">c</span><span class="paren">(</span><span class="number">0.6</span>,<span class="number">0.8</span><span class="paren">)</span>, <span class="identifier">guide</span><span class="operator">=</span><span class="string">'none'</span><span class="paren">)</span> <span class="operator">+</span>
+    <span class="identifier">scale_fill_gradient</span><span class="paren">(</span><span class="string">'Robbery\nTheft\nDensity'</span><span class="paren">)</span><span class="operator">+</span>
+    <span class="identifier">ggtitle</span><span class="paren">(</span><span class="string">'Robbery/Theft Density in San Francisco'</span><span class="paren">)</span></code></pre>
+<p><img src="./2016-01-29-San-Fransisco-Crime_files/p-lt-contour-map-1.png" title="" alt="" width="768"></p>
+</div>
+<div id="a-closer-look" class="section level2">
+<h2>A Closer Look</h2>
+<p>There are some definite hotspots there so we’ll zoom in and take a closer look.</p>
+<pre class="r"><code class="r"><span class="comment"># more focussed map for larceny centre</span>
+<span class="identifier">zoom.centre</span> <span class="operator">=</span> <span class="identifier">c</span><span class="paren">(</span><span class="operator">-</span><span class="number">122.41</span>, <span class="number">37.79</span><span class="paren">)</span>
+<span class="identifier">zoom.map</span> <span class="operator">&lt;-</span> <span class="identifier">get_map</span><span class="paren">(</span><span class="identifier">location</span><span class="operator">=</span><span class="identifier">zoom.centre</span>, <span class="identifier">zoom</span> <span class="operator">=</span> <span class="number">14</span><span class="paren">)</span></code></pre>
+<pre class="r"><code class="r"><span class="comment"># Larceny/Theft Contours</span>
+<span class="identifier">ggmap</span><span class="paren">(</span><span class="identifier">zoom.map</span>, <span class="identifier">extent</span><span class="operator">=</span><span class="string">'device'</span>, <span class="identifier">legend</span><span class="operator">=</span><span class="string">"topleft"</span><span class="paren">)</span> <span class="operator">+</span> 
+    <span class="identifier">stat_density2d</span><span class="paren">(</span><span class="identifier">data</span> <span class="operator">=</span> <span class="identifier">sf.p.lt</span>,
+                   <span class="identifier">aes</span><span class="paren">(</span><span class="identifier">x</span> <span class="operator">=</span> <span class="identifier">X</span>, <span class="identifier">y</span> <span class="operator">=</span> <span class="identifier">Y</span>, <span class="identifier">fill</span> <span class="operator">=</span> <span class="identifier">..level</span>.., <span class="identifier">alpha</span><span class="operator">=</span><span class="identifier">..level</span>..<span class="paren">)</span>,
+                   <span class="identifier">size</span> <span class="operator">=</span> <span class="number">0.1</span>, <span class="identifier">colour</span><span class="operator">=</span><span class="string">"red"</span>, <span class="identifier">n</span><span class="operator">=</span><span class="number">100</span>,
+                   <span class="identifier">geom</span> <span class="operator">=</span> <span class="string">"polygon"</span><span class="paren">)</span> <span class="operator">+</span>
+    <span class="identifier">scale_alpha_continuous</span><span class="paren">(</span><span class="identifier">range</span><span class="operator">=</span><span class="identifier">c</span><span class="paren">(</span><span class="number">0.2</span>,<span class="number">0.4</span><span class="paren">)</span>, <span class="identifier">guide</span><span class="operator">=</span><span class="string">'none'</span><span class="paren">)</span> <span class="operator">+</span>
+    <span class="identifier">scale_fill_gradient</span><span class="paren">(</span><span class="string">'Robbery\nTheft\nDensity'</span><span class="paren">)</span><span class="operator">+</span>
+    <span class="identifier">ggtitle</span><span class="paren">(</span><span class="string">'Robbery/Theft Density in San Francisco'</span><span class="paren">)</span></code></pre>
+<p><img src="./2016-01-29-San-Fransisco-Crime_files/p-lt-contour-map-zoom-1.png" title="" alt="" width="768"></p>
+</div>
+<div id="central-district" class="section level1">
+<h1>Central District</h1>
+<p>An even closer look at the central district</p>
+<pre class="r"><code class="r"><span class="comment"># more focussed map for larceny centre</span>
+<span class="identifier">big.zoom.centre</span> <span class="operator">=</span> <span class="identifier">c</span><span class="paren">(</span><span class="operator">-</span><span class="number">122.409</span>, <span class="number">37.786</span><span class="paren">)</span>
+<span class="identifier">big.zoom.map</span> <span class="operator">&lt;-</span> <span class="identifier">get_map</span><span class="paren">(</span><span class="identifier">location</span><span class="operator">=</span><span class="identifier">zoom.centre</span>, <span class="identifier">zoom</span> <span class="operator">=</span> <span class="number">15</span><span class="paren">)</span></code></pre>
+<pre class="r"><code class="r"><span class="comment"># Larceny/Theft Contours</span>
+<span class="identifier">ggmap</span><span class="paren">(</span><span class="identifier">big.zoom.map</span>, <span class="identifier">extent</span><span class="operator">=</span><span class="string">'device'</span>, <span class="identifier">legend</span><span class="operator">=</span><span class="string">"topleft"</span><span class="paren">)</span> <span class="operator">+</span> 
+    <span class="identifier">stat_density2d</span><span class="paren">(</span><span class="identifier">data</span> <span class="operator">=</span> <span class="identifier">sf.p.lt</span>,
+                   <span class="identifier">aes</span><span class="paren">(</span><span class="identifier">x</span> <span class="operator">=</span> <span class="identifier">X</span>, <span class="identifier">y</span> <span class="operator">=</span> <span class="identifier">Y</span>, <span class="identifier">fill</span> <span class="operator">=</span> <span class="identifier">..level</span>.., <span class="identifier">alpha</span><span class="operator">=</span><span class="identifier">..level</span>..<span class="paren">)</span>,
+                   <span class="identifier">size</span> <span class="operator">=</span> <span class="number">0.1</span>, <span class="identifier">colour</span><span class="operator">=</span><span class="string">"red"</span>, <span class="identifier">n</span><span class="operator">=</span><span class="number">200</span>, <span class="identifier">geom</span> <span class="operator">=</span> <span class="string">"polygon"</span><span class="paren">)</span> <span class="operator">+</span>
+    <span class="identifier">scale_alpha_continuous</span><span class="paren">(</span><span class="identifier">range</span><span class="operator">=</span><span class="identifier">c</span><span class="paren">(</span><span class="number">0.05</span>, <span class="number">0.1</span><span class="paren">)</span>, <span class="identifier">guide</span><span class="operator">=</span><span class="string">'none'</span><span class="paren">)</span> <span class="operator">+</span>
+    <span class="identifier">scale_fill_gradient</span><span class="paren">(</span><span class="string">'Robbery\nTheft\nDensity'</span><span class="paren">)</span><span class="operator">+</span>
+    <span class="identifier">ggtitle</span><span class="paren">(</span><span class="string">'Robbery/Theft Density in San Francisco'</span><span class="paren">)</span></code></pre>
+<p><img src="./2016-01-29-San-Fransisco-Crime_files/p-lt-contour-map-big-zoom-1.png" title="" alt="" width="768"></p>
+<p>From the map it’s clear that there are areas with elevated levels of robbery/theft, and with the shading mostly removed its possible to see that one of the strongest centres is the area area around Powel St Station.</p>
+</div>
+<div id="robbery-vs-theft-contours" class="section level1">
+<h1>Robbery vs Theft Contours</h1>
+<p>Obviously no-one wants to be a victim of larceny/theft, but robbery (with violence or threat) is likely to be worse - do these two sets of crimes happen in different places?</p>
+<p>Larceny contours are in blue, Robbery contours in red.</p>
+<pre class="r"><code class="r"><span class="comment"># Larceny - Blue</span>
+<span class="comment"># Robbery - Red</span>
+<span class="identifier">ggmap</span><span class="paren">(</span><span class="identifier">big.zoom.map</span>, <span class="identifier">extent</span><span class="operator">=</span><span class="string">'device'</span><span class="paren">)</span> <span class="operator">+</span> 
+    <span class="identifier">stat_density2d</span><span class="paren">(</span><span class="identifier">data</span> <span class="operator">=</span> <span class="identifier">sf.p.lt</span> <span class="operator">%&gt;%</span> <span class="identifier">filter</span><span class="paren">(</span><span class="identifier">Category</span><span class="operator">==</span><span class="string">"Larceny/Theft"</span><span class="paren">)</span>,
+                   <span class="identifier">aes</span><span class="paren">(</span><span class="identifier">x</span> <span class="operator">=</span> <span class="identifier">X</span>, <span class="identifier">y</span> <span class="operator">=</span> <span class="identifier">Y</span>, <span class="identifier">fill</span> <span class="operator">=</span> <span class="identifier">..level</span>.., <span class="identifier">alpha</span><span class="operator">=</span><span class="identifier">..level</span>..<span class="paren">)</span>,
+                   <span class="identifier">colour</span><span class="operator">=</span><span class="string">"blue"</span>, <span class="identifier">n</span><span class="operator">=</span><span class="number">200</span>, <span class="identifier">geom</span> <span class="operator">=</span> <span class="string">"polygon"</span>, <span class="identifier">bins</span><span class="operator">=</span><span class="number">7</span><span class="paren">)</span> <span class="operator">+</span>
+    <span class="identifier">stat_density2d</span><span class="paren">(</span><span class="identifier">data</span> <span class="operator">=</span> <span class="identifier">sf.p.lt</span> <span class="operator">%&gt;%</span> <span class="identifier">filter</span><span class="paren">(</span><span class="identifier">Category</span><span class="operator">==</span><span class="string">"Robbery"</span><span class="paren">)</span>,
+                   <span class="identifier">aes</span><span class="paren">(</span><span class="identifier">x</span> <span class="operator">=</span> <span class="identifier">X</span>, <span class="identifier">y</span> <span class="operator">=</span> <span class="identifier">Y</span>, <span class="identifier">fill</span> <span class="operator">=</span> <span class="identifier">..level</span>.., <span class="identifier">alpha</span><span class="operator">=</span><span class="identifier">..level</span>..<span class="paren">)</span>,
+                   <span class="identifier">colour</span><span class="operator">=</span><span class="string">"red"</span>, <span class="identifier">n</span><span class="operator">=</span><span class="number">200</span>, <span class="identifier">geom</span> <span class="operator">=</span> <span class="string">"polygon"</span>, <span class="identifier">bins</span><span class="operator">=</span><span class="number">7</span><span class="paren">)</span> <span class="operator">+</span>
+    <span class="identifier">scale_alpha_continuous</span><span class="paren">(</span><span class="identifier">range</span><span class="operator">=</span><span class="identifier">c</span><span class="paren">(</span><span class="number">0.0</span>,<span class="number">0.1</span><span class="paren">)</span>, <span class="identifier">guide</span><span class="operator">=</span><span class="string">'none'</span><span class="paren">)</span> <span class="operator">+</span>    
+    <span class="identifier">scale_fill_gradient</span><span class="paren">(</span><span class="string">'Robbery\nTheft\nDensities'</span><span class="paren">)</span> <span class="operator">+</span>
+    <span class="identifier">ggtitle</span><span class="paren">(</span><span class="string">'Robbery/Theft Contours in San Francisco'</span><span class="paren">)</span> <span class="operator">+</span>
+    <span class="identifier">theme</span><span class="paren">(</span><span class="identifier">legend.position</span> <span class="operator">=</span> <span class="string">"none"</span><span class="paren">)</span></code></pre>
+<p><img src="./2016-01-29-San-Fransisco-Crime_files/rt-lt-contour-map-zoom-1.png" title="" alt="" width="768"></p>
+<p><br>From the overlapping contours it seems that these two categories of crimes happen in broadly the same areas with only minor differences. <br> <br></p>
+</div>
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+$(document).ready(function () {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+});
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+
+
+</body></html>

@@ -2,7 +2,7 @@
 layout: default
 modal-id: 2
 date: 2015-12-01
-img: ../../assets/2015-12-01-ChickWeight_files\figure-html/growth_scatter_diet-1.png
+img: ../../img/Chick-Growth.png
 alt: Chick Weight Comparison by Diet
 client: myself
 project-date: December 2015

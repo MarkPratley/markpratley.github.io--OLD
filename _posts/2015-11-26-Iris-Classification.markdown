@@ -1,8 +1,8 @@
 ---
 layout: default
-modal-id: 1
+modal-id: Iris
 date: 2015-11-03
-img: ../../assets/2015-11-03-Iris-Classification_files/figure-html/corr-1.png
+img: ../../img/Iris-Data-Big.png
 alt: Pairwise Correlation Matrix
 client: myself
 project-date: November 2015

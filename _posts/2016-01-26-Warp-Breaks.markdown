@@ -2,7 +2,7 @@
 layout: default
 modal-id: 3
 date: 2016-01-26
-img: ../../assets/2016-01-26-Warp-Breaks_files/figure-slidy/unnamed-chunk-9-1.png
+img: ../../img/Warp-Breaks.png
 alt: Yarn Temsion Graph
 client: myself
 project-date: January 2016
